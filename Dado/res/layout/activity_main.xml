@@ -14,7 +14,7 @@
         android:clickable="false"
         android:focusable="false"
         android:height="100dp"
-        android:text="6"
+        android:text="@string/six"
         android:textSize="32sp"
         android:width="100dp" />
 
@@ -26,6 +26,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="36dp"
         android:onClick="lanzar"
-        android:text="Lanzar" />
+        android:text="@string/launch" />
 
 </RelativeLayout>

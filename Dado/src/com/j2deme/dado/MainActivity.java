@@ -4,6 +4,7 @@ import java.util.Random;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.res.Resources;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -25,11 +26,20 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	
-	public void lanzar(View Button) {
+	public void lanzar(View b) {
+		Resources res = getResources();
+		String[] numbers = {
+			res.getString(R.string.one),
+			res.getString(R.string.two),
+			res.getString(R.string.three),
+			res.getString(R.string.four),
+			res.getString(R.string.five),
+			res.getString(R.string.six)
+		};
 		int nextValue;
 		Random rand = new Random();
     	nextValue = rand.nextInt(6) + 1;
-    	Dado.setText(""+nextValue);
+    	Dado.setText(numbers[nextValue-1]);
 	  }
 
 }
