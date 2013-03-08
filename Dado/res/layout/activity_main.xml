@@ -11,10 +11,11 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="72dp"
+        android:background="@drawable/dice_6"
         android:clickable="false"
         android:focusable="false"
         android:height="100dp"
-        android:text="@string/six"
+        android:text=""
         android:textSize="32sp"
         android:width="100dp" />
 
