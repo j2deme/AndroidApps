@@ -45,4 +45,5 @@
         android:layout_below="@+id/conversions"
         android:text="@string/calc"
         android:onClick="calculate"/>
+
 </RelativeLayout> 
