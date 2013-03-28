@@ -133,11 +133,11 @@ public class RaceCourse extends Activity {
 	}
 
 	public void throwDice(View view){
-		/*Intent diceIntent = new Intent(this, RaceCourse.class);
-        raceCourseIntent.putExtra(PLAYERS, players);
-        startActivity(raceCourseIntent);*/
+		Intent diceIntent = new Intent(this, DiceActivity.class);
+        //diceIntent.putExtra(PLAYERS, players);
+        startActivity(diceIntent);
 		Context context = getApplicationContext();
-		CharSequence text = "Throw Dice invoked!";
+		CharSequence text = "Ready to throw dice!";
 		int duration = Toast.LENGTH_SHORT;
 		
 		Toast.makeText(context, text, duration).show();
