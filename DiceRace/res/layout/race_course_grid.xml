@@ -12,11 +12,12 @@
         android:stretchColumns="*" >
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/btnThrowDice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/btn_throw_dice" 
-            android:onClick="throwDice"/>
+            android:onClick="throwDice"
+            android:text="@string/btn_throw_dice" />
+
     </TableLayout>
 
 </ScrollView>

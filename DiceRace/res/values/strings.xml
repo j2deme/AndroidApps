@@ -16,5 +16,7 @@
     <string name="btn_set_players">Play</string>
     <string name="title_activity_race_course">Course</string>
     <string name="btn_throw_dice">Throw Dice</string>
+    <string name="title_activity_dice">Dice</string>
+    <string name="launch">Throw</string>
 
 </resources>

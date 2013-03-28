@@ -30,6 +30,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.j2deme.dicerace.MainActivity" />
         </activity>
+        <activity
+            android:name="com.j2deme.dicerace.DiceActivity"
+            android:label="@string/title_activity_dice" >
+        </activity>
     </application>
 
 </manifest>
