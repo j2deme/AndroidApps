@@ -22,5 +22,7 @@
     <string name="btn_throw_dice">Throw Dice</string>
     <string name="title_activity_dice">Dice</string>
     <string name="launch">Throw</string>
+    <string name="title_activity_end">End of Game</string>
+    <string name="restart">Restart</string>
 
 </resources>

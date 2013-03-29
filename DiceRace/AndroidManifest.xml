@@ -34,6 +34,10 @@
             android:name="com.j2deme.dicerace.DiceActivity"
             android:label="@string/title_activity_dice" >
         </activity>
+        <activity
+            android:name="com.j2deme.dicerace.EndActivity"
+            android:label="@string/title_activity_end" >
+        </activity>
     </application>
 
 </manifest>

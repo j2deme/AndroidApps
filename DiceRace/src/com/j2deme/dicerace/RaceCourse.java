@@ -2,7 +2,6 @@ package com.j2deme.dicerace;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -15,12 +14,12 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class RaceCourse extends Activity {
 	static final String STATE_TURN = "currentTurn";
 	static final String STATE_POS = "currentPositions";
 	static final String STATE_PLAYERS = "numberPlayers";
+	static final String STATE_WINNER = "winner";
 
 	static final int RED = Color.parseColor("#E81809");
 	static final int BLACK = Color.parseColor("#000000");
@@ -94,24 +93,20 @@ public class RaceCourse extends Activity {
 		    		 currentTurn = 1;
 		    	 }
 		    	 
-		    	 Context context = getApplicationContext();
+		    	 /*Context context = getApplicationContext();
 		    	 CharSequence text;
-		    	 int duration = Toast.LENGTH_SHORT;
+		    	 int duration = Toast.LENGTH_SHORT;*/
 		    	 if(players == 1 && currentTurn == 2){
-		    		 TextView player = (TextView) findViewById(10);
-		    		 TextView cpu = (TextView) findViewById(11);
-		    		 player.setTextColor(BLACK);
-		    		 cpu.setTextColor(RED);
-		    		 
-		    		 DiceActivity d = new DiceActivity();
-		    		 int r = d.random();
-		    		 text = "CPU's turn.\nIt got a " + r + ".";
-		    		 currentTurn = 1;
+		    		DiceActivity d = new DiceActivity();
+		    		int r = d.random();
+		    		//text = "CPU's turn.\nIt got a " + r + ".";
+		    		currentPositions[currentTurn-1] += r;
+		    		currentTurn = 1;
 		    	 } else {
-		    		 text = "Player " + currentTurn + "'s turn.";
+		    		//text = "Player " + currentTurn + "'s turn.";
 		    	 }
 		 		
-		 		Toast.makeText(context, text, duration).show();
+		 		//Toast.makeText(context, text, duration).show();
 		 		updateGrid();
 		     }
 		}
@@ -185,14 +180,21 @@ public class RaceCourse extends Activity {
 		//Update positions
 		for (int i = 0; i < currentPositions.length; i++) {
 			int val = currentPositions[i];
-			Button step = (Button) findViewById(((val+2)*10)+i);
-			step.setTextColor(RED);
+			if(val >= 10){
+				Intent endIntent = new Intent(this, EndActivity.class);
+				endIntent.putExtra(STATE_WINNER, i+1);
+				endIntent.putExtra(STATE_PLAYERS, players);
+		        startActivity(endIntent);
+			} else {
+				Button step = (Button) findViewById(((val+2)*10)+i);
+				step.setTextColor(RED);
+			}
 		}
 	}
 	
 	public void throwDice(View view){
 		Intent diceIntent = new Intent(this, DiceActivity.class);
         startActivityForResult(diceIntent, 1);
-        view.invalidate();
+        //view.invalidate();
 	}
 }
