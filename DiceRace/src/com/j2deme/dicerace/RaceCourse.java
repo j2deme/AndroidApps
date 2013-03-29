@@ -21,6 +21,10 @@ public class RaceCourse extends Activity {
 	static final String STATE_TURN = "currentTurn";
 	static final String STATE_POS = "currentPositions";
 	static final String STATE_PLAYERS = "numberPlayers";
+
+	static final int RED = Color.parseColor("#E81809");
+	static final int BLACK = Color.parseColor("#000000");
+	static final int STEPS = 10;
 	private int players;
 	private int currentTurn;
 	private int[] currentPositions;
@@ -32,7 +36,6 @@ public class RaceCourse extends Activity {
 		//setContentView(R.layout.activity_race_course);
 		setContentView(R.layout.race_course_grid);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            // Show the Up button in the action bar.
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
 		super.onCreate(savedInstanceState);
@@ -54,16 +57,6 @@ public class RaceCourse extends Activity {
 	    createGrid();
 	}
 	
-	@Override
-	protected void onStart(){
-		super.onStart();
-	}
-	
-	@Override
-	protected void onStop() {
-	    super.onStop();
-	}
-		
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 	    savedInstanceState.putInt(STATE_TURN, currentTurn);
@@ -90,10 +83,45 @@ public class RaceCourse extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == 1) {
+		     if(resultCode == RESULT_OK){
+		    	 int result = data.getIntExtra(DiceActivity.RESULT, 1);
+		    	 
+		    	 int value = currentPositions[currentTurn-1] += result;
+		    	 currentTurn++;
+		    	 if(currentTurn > currentPositions.length){
+		    		 currentTurn = 1;
+		    	 }
+		    	 
+		    	 Context context = getApplicationContext();
+		    	 CharSequence text;
+		    	 int duration = Toast.LENGTH_SHORT;
+		    	 if(players == 1 && currentTurn == 2){
+		    		 TextView player = (TextView) findViewById(10);
+		    		 TextView cpu = (TextView) findViewById(11);
+		    		 player.setTextColor(BLACK);
+		    		 cpu.setTextColor(RED);
+		    		 
+		    		 DiceActivity d = new DiceActivity();
+		    		 int r = d.random();
+		    		 text = "CPU's turn.\nIt got a " + r + ".";
+		    		 currentTurn = 1;
+		    	 } else {
+		    		 text = "Player " + currentTurn + "'s turn.";
+		    	 }
+		 		
+		 		Toast.makeText(context, text, duration).show();
+		 		updateGrid(value);
+		     }
+		}
+		if(resultCode == RESULT_CANCELED) {}
+	}
+	
 	public void createGrid(){
 		int cols = (players == 1) ? 2 : players;
 		TableLayout tl =  (TableLayout) findViewById(R.id.tableLayout);
-		for (int i = 0; i < 12; i++) {
+		for (int i = 0; i < (STEPS + 2); i++) {
 			TableRow tr = new TableRow(this);
 			TableLayout.LayoutParams params = new TableLayout.LayoutParams(
 	                TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT, 1f);
@@ -109,18 +137,20 @@ public class RaceCourse extends Activity {
 					}
 					lbl_player.setText(title);
 					lbl_player.setLayoutParams(cellParams);
+					lbl_player.setId(((i+1)*10)+(j));
 					lbl_player.setTag("lblPlayer"+(j+1));
 					lbl_player.setTextSize(25);
 					if(currentTurn == (j+1)){
-						lbl_player.setTextColor(Color.parseColor("#E81809"));
+						lbl_player.setTextColor(RED);
 					}
 					tr.addView(lbl_player);
 				} else {
 					Button step = new Button(this);
 					if(currentPositions[j] == (i-1)){
-						step.setTextColor(Color.parseColor("#FA2205"));
+						step.setTextColor(RED);
 					}
 					step.setText(""+(i-1));
+					step.setId(((i+1)*10)+(j));
 					step.setTag(""+i+j);
 					step.setLayoutParams(cellParams);
 					tr.addView(step);
@@ -132,14 +162,30 @@ public class RaceCourse extends Activity {
 		tl.setStretchAllColumns(true);
 	}
 
+	public void updateGrid(int value){
+		//Update labels
+		for (int i = 0; i < currentPositions.length; i++) {
+			TextView lbl = (TextView) findViewById(10 + i);
+			lbl.setTextColor(BLACK);
+		}
+		TextView current = (TextView) findViewById(10 + (currentTurn-1));
+		current.setTextColor(RED);
+		
+		//Update buttons
+		/*int cols = (players == 1) ? 2 : players;
+		int x0y0 = 21;
+		int xy = ((STEPS + 2) * 10) + cols;
+		for (int i = x0y0; i <= (20 + cols); i++) {
+			for (int j = 20; j <= xy;) {
+				
+			}
+		}
+   	 	Button step = (Button) findViewById(((currentTurn+1)*10)+(value));*/
+	}
+	
 	public void throwDice(View view){
 		Intent diceIntent = new Intent(this, DiceActivity.class);
-        //diceIntent.putExtra(PLAYERS, players);
-        startActivity(diceIntent);
-		Context context = getApplicationContext();
-		CharSequence text = "Ready to throw dice!";
-		int duration = Toast.LENGTH_SHORT;
-		
-		Toast.makeText(context, text, duration).show();
+        startActivityForResult(diceIntent, 1);
+        view.invalidate();
 	}
 }

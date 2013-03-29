@@ -5,13 +5,17 @@ import java.util.Random;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class DiceActivity extends Activity {
+	static final String RESULT = "Result";
 	private Button Dado;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +33,7 @@ public class DiceActivity extends Activity {
 	@SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
 	public void lanzar(View view){
+		int r = random();
 		Resources res = getResources();
 		int currentapiVersion = android.os.Build.VERSION.SDK_INT;
 		Drawable[] sides = {
@@ -40,12 +45,23 @@ public class DiceActivity extends Activity {
 			res.getDrawable(R.drawable.dice_6),
 		};
 		
-    	Drawable drawable = sides[random()-1];
+    	Drawable drawable = sides[r-1];
 		if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN){
 			Dado.setBackground(drawable);
 		} else{
 			Dado.setBackgroundDrawable(drawable);
 		}
+		
+		Context context = getApplicationContext();
+		CharSequence text = "You got a " + r + "!";
+		int duration = Toast.LENGTH_SHORT;
+		
+		Toast.makeText(context, text, duration).show();
+		
+		Intent returnIntent = new Intent();
+		returnIntent.putExtra(RESULT,r);
+		setResult(RESULT_OK,returnIntent);     
+		finish();
 	}
 	
 	public int random(){
