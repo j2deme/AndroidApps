@@ -88,7 +88,7 @@ public class RaceCourse extends Activity {
 		     if(resultCode == RESULT_OK){
 		    	 int result = data.getIntExtra(DiceActivity.RESULT, 1);
 		    	 
-		    	 int value = currentPositions[currentTurn-1] += result;
+		    	 currentPositions[currentTurn-1] += result;
 		    	 currentTurn++;
 		    	 if(currentTurn > currentPositions.length){
 		    		 currentTurn = 1;
@@ -112,7 +112,7 @@ public class RaceCourse extends Activity {
 		    	 }
 		 		
 		 		Toast.makeText(context, text, duration).show();
-		 		updateGrid(value);
+		 		updateGrid();
 		     }
 		}
 		if(resultCode == RESULT_CANCELED) {}
@@ -162,7 +162,7 @@ public class RaceCourse extends Activity {
 		tl.setStretchAllColumns(true);
 	}
 
-	public void updateGrid(int value){
+	public void updateGrid(){
 		//Update labels
 		for (int i = 0; i < currentPositions.length; i++) {
 			TextView lbl = (TextView) findViewById(10 + i);
@@ -172,15 +172,22 @@ public class RaceCourse extends Activity {
 		current.setTextColor(RED);
 		
 		//Update buttons
-		/*int cols = (players == 1) ? 2 : players;
-		int x0y0 = 21;
-		int xy = ((STEPS + 2) * 10) + cols;
-		for (int i = x0y0; i <= (20 + cols); i++) {
-			for (int j = 20; j <= xy;) {
-				
+		int cols = (players == 1) ? 2 : players;
+		int x0y0 = 20;
+		int xy = (STEPS + 2) * 10;
+		for (int i = 0; i < cols; i++) { // 0 -> 3
+			for (int j = x0y0; j <= xy;) { // 20 -> 120
+				Button step = (Button) findViewById(j+i);
+				step.setTextColor(BLACK);
+				j += 10;
 			}
 		}
-   	 	Button step = (Button) findViewById(((currentTurn+1)*10)+(value));*/
+		//Update positions
+		for (int i = 0; i < currentPositions.length; i++) {
+			int val = currentPositions[i];
+			Button step = (Button) findViewById(((val+2)*10)+i);
+			step.setTextColor(RED);
+		}
 	}
 	
 	public void throwDice(View view){
