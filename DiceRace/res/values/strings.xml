@@ -9,12 +9,14 @@
     <string name="player2">2 Players</string>
     <string name="player3">3 Players</string>
     <string name="player4">4 Players</string>
+    <string  name="player5">5 players</string>
 
     <string-array name="game_modes_list">
         <item>@string/player1</item>
         <item>@string/player2</item>
         <item>@string/player3</item>
         <item>@string/player4</item>
+        <item>@string/player5</item>
     </string-array>
 
     <string name="btn_set_players">Play</string>
